@@ -7,6 +7,7 @@ const {removeUser } = require('../helpers/user')
 chai.use(chaiHttp);
 
 removeUser()
+var token = ''
 
 describe('post success add new user', function () {
   it('should be register a user', function (done) {
@@ -132,9 +133,49 @@ describe('success post login user',function() {
         .post('/users/login')
         .send(user)
         .end(function(err, res){
-          console.log(res.body)
           expect(err).to.be.null
+          expect(res.status).to.equal(200)
           expect(res.body).to.be.an('object')
+          token = res.body.token
+          done()
+        })
+  })
+})
+
+describe('post fail login user email', function(){
+  it('should be return 401 and object error email',function(done){
+    let user = {
+      email : '',
+      password : '1234567'
+    }
+
+    chai
+        .request(app)
+        .post('/users/login')
+        .send(user)
+        .end(function(err , res) {
+          expect(err).to.be.null
+          expect(res.status).to.equal(401)
+          expect(res.body).haveOwnProperty('err')
+          done()
+        })
+  })
+})
+
+describe('post fail login user password', function(){
+  it('should be return 401 and object error password',function(done){
+    let user = {
+      email : 'mazhar@gmail.com',
+      password : ''
+    }
+    chai
+        .request(app)
+        .post('/users/login')
+        .send(user)
+        .end(function(err , res) {
+          expect(err).to.be.null
+          expect(res.status).to.equal(401)
+          expect(res.body).haveOwnProperty('err')
           done()
         })
   })

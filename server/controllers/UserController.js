@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const { compare }  = require('../helpers/brcypt')
+const { sign } = require('../helpers/jwt')
 
 class UserController {
 
@@ -20,6 +22,30 @@ class UserController {
          else{
           res.status(500).json(err)
         }
+      })
+  }
+  
+  static loginUser(req, res) {
+    User.findOne({
+      email : req.body.email
+    })
+      .then((found) => {
+        if(!found) {
+          res.status(401).json({err : 'username or password not found'})
+        }else {
+          if(!compare(req.body.password, found.password)) {
+            res.status(401).json({err : 'username or password not found'})
+          } else {
+            let token = sign({
+              email :found.email,
+             _id :  found._id,
+            })
+            res.status(200).json({token})
+          }
+        }
+      })
+      .catch(err => {
+        res.status(500).json(err)
       })
   }
 }

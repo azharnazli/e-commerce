@@ -45,6 +45,9 @@ const UserSchema = new Schema({
       },
       message: `email format error`
     }]
+  },
+  roles : {
+    type : String,
   }
 })
 

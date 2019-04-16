@@ -2,7 +2,7 @@ const User = require('../models/user')
 
 module.exports = {
   removeUser: function () {
-    before(function (done) {
+    after(function (done) {
       User.deleteMany({})
         .then((user) => {
           done()

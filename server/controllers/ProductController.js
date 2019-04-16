@@ -11,7 +11,6 @@ class ProductController{
         if(err.name == 'CastError' || err.name == 'ValidationError') {
           res.status(400).json({ err : err.message})
         } else {
-          console.log(err)
           res.status(500).json(err)
         }
       })
@@ -26,6 +25,31 @@ class ProductController{
         res.status(500).json(err)
       })
   }
+
+  static editProduct( req, res) {
+    Product.findOneAndUpdate({_id : req.params.productId}, req.body, {new : true, runValidators:true})
+    .then(editedProduct => {
+      res.status(200).json(editedProduct)
+    })
+    .catch(err => {
+      if(err.errors) {
+        res.status(400).json({ err : err.errors})
+      } else {
+        res.status(500).json(err)
+      }
+    })
+  }
+
+  static deleteProduct(req, res) {
+    Product.findOneAndDelete({_id : req.params.productId})
+      .then((product) => {
+        res.status(200).json(product)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  }
+
 }
 
 

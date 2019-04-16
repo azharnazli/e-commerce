@@ -2,6 +2,7 @@ const { verify } = require('../helpers/jwt')
 const User = require('../models/user')
 
 module.exports = (req, res, next) => {
+  try {
     const decode = verify(req.headers.token, process.env.SECRET_KEY)
     User.findOne({
         email: decode.email
@@ -21,4 +22,7 @@ module.exports = (req, res, next) => {
           error: 'Authentication ERROR'
         })
       })
+  } catch (err) {
+    res.status(401).json(err)
+  }
 }
