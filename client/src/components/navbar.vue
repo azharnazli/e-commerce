@@ -1,7 +1,7 @@
 <template>
   <v-toolbar color="eaeaea" fixed >
 
-    <v-toolbar-title> <v-btn to="/home" color="#621e81" class="white--text"><span style="color: #257aa6;">Switc</span><span
+    <v-toolbar-title> <v-btn to="/" color="#621e81" class="white--text"><span style="color: #257aa6;">Switc</span><span
         style="color: #00bdaa;">Hip</span></v-btn></v-toolbar-title>
 
     <v-spacer></v-spacer>

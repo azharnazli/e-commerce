@@ -4,15 +4,15 @@
     <errorAlert v-if="isError" v-bind:msg="errMessage">
     </errorAlert>
     <v-form class="border" ref="form" v-model="valid" lazy-validation>
-      <v-text-field v-model="first_name" :counter="20" :rules="firstNameRules" label="firstName" required>
+      <v-text-field v-model="first_name" :counter="20" :rules="firstNameRules" label="first name" required>
       </v-text-field>
-      <v-text-field v-model="last_name" :counter="20" :rules="lastNameRules" label="lastName" required></v-text-field>
+      <v-text-field v-model="last_name" :counter="20" :rules="lastNameRules" label="last name" required></v-text-field>
 
-      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+      <v-text-field v-model="email" :rules="emailRules" label="e-mail" required></v-text-field>
 
       <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
         :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1"
-        label="Normal with hint text" hint="At least 8 characters" counter @click:append="show1 = !show1">
+        label="password" hint="At least 8 characters" counter @click:append="show1 = !show1">
       </v-text-field>
 
       <v-btn :disabled="!valid" color="success" @click="register">
@@ -85,6 +85,10 @@
           })
       },
       reset() {
+        this.password = ''
+        this.email = ''
+        this.first_name = ''
+        this.last_name = ''
         this.errMessage = false
         this.isError = false
       }

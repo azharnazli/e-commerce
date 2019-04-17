@@ -1,24 +1,15 @@
 <template>
   <v-container>
-      <h1>Login</h1>
-      <errorAlert  
-      v-if="isError" 
-      v-bind:msg="errMessage ">
-      </errorAlert> 
+    <h1>Login</h1>
+    <errorAlert v-if="isError" v-bind:msg="errMessage">
+    </errorAlert>
     <v-form class="border" ref="form" v-model="valid" lazy-validation>
       <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
 
-      <v-text-field
-            v-model="password"
-            :append-icon="show1 ? 'visibility' : 'visibility_off'"
-            :rules="[rules.required, rules.min]"
-            :type="show1 ? 'text' : 'password'"
-            name="input-10-1"
-            label="Normal with hint text"
-            hint="At least 8 characters"
-            counter
-            @click:append="show1 = !show1"
-          ></v-text-field>
+      <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
+        :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1"
+        label="password" hint="At least 8 characters" counter @click:append="show1 = !show1">
+      </v-text-field>
 
       <v-btn :disabled="!valid" color="success" @click="login">
         login
@@ -33,20 +24,21 @@
 
 <script>
   import errorAlert from '../components/error.vue'
+import { constants } from 'crypto';
   export default {
-    components : {
+    components: {
       errorAlert
     },
     data: () => ({
-        show1: false,
-        isError: false,
-        errMessage :'',
-        password: '',
-        rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters',
-          emailMatch: () => ('The email and password you entered don\'t match')
-        },
+      show1: false,
+      isError: false,
+      errMessage: '',
+      password: '',
+      rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+        emailMatch: () => ('The email and password you entered don\'t match')
+      },
       valid: true,
       email: '',
       emailRules: [
@@ -58,12 +50,11 @@
     methods: {
       login() {
         this.axios.post('users/login', {
-          email : this.email,
-          password :this.password
-        })
-          .then(({data})=> {
-            localStorage.setItem('token', data)
-            console.log(data)
+            email: this.email,
+            password: this.password
+          })
+          .then(({ data }) => {
+            localStorage.setItem('token', data.token)
             this.$refs.form.reset()
             this.$emit('successLogin')
             this.$router.push('/')
@@ -71,11 +62,12 @@
           .catch(err => {
             this.isError = true
             this.errMessage = err.response.data.err
-            
+
           })
       },
       reset() {
-        this.$refs.form.reset()
+        this.password = ''
+        this.email = ''
         this.isError = false
       }
     }
@@ -83,14 +75,10 @@
 
 </script>
 <style scoped>
-  .container{
+  .container {
     margin-top: 20%;
     max-width: 50%;
     border: 1px solid gray;
   }
+
 </style>
-
-
-
-
-

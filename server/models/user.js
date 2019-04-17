@@ -53,6 +53,7 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', function (next) {
   this.password = hash(this.password)
+  this.roles = 'user'
   next()
 })
 

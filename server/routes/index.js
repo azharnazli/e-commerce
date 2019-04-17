@@ -5,7 +5,7 @@ const productRoute = require('./product')
 const cartRoute = require('./cart')
 
 router.use('/users', userRoute)
-router.use('/product', productRoute)
+router.use('/products', productRoute)
 router.use('/cart', cartRoute)
 
 module.exports = router;
