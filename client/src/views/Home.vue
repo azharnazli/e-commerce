@@ -1,15 +1,15 @@
 <template>
-  <v-container fluid grid-list-md>
+  <v-container grid-list-md>
     <v-layout row wrap>
-      <card style="margin: 10px;"
-      v-for="(product, index) in products"
-      v-bind:key="index" 
-      v-bind:name="product.name"
-      v-bind:description="product.description"
-      v-bind:price="product.price"
+      <card style="margin: 10px;" 
+      v-for="(product, index) in filteredProduct" 
+      v-bind:key="index" v-bind:name="product.name"
+      v-bind:description="product.description" 
+      v-bind:price="product.price" 
       v-bind:stock="product.stock"
       v-bind:image="product.image"
-      ></card>
+      v-bind:cardId="product._id">
+      </card>
     </v-layout>
   </v-container>
 </template>
@@ -18,33 +18,44 @@
   import card from '../components/productCard.vue'
 
   export default {
+    props: ['searchData'],
     components: {
       card
     },
     data() {
       return {
-        products : []
+        products: []
       }
     },
     mounted() {
       this.getProduct()
-      
+
     },
-    methods : {
+    methods: {
       getProduct() {
         this.axios.get('/products', {
-          headers : {
-            token : localStorage.getItem('token')
-          }
-        })
-          .then(({data}) => {
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
+          .then(({
+            data
+          }) => {
             this.products = data
           })
           .catch(err => {
             console.log(err)
           })
-      },
-      
+      }
+    },
+    computed: {
+      filteredProduct: function () {
+        return this.products.filter(product => {
+          if (product.name) {
+            return product.name.toLowerCase().match(this.searchData.toLowerCase())
+          }
+        })
+      }
     }
   }
 

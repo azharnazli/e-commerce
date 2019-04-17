@@ -26,6 +26,20 @@ class CartController {
       })
   }
 
+  static findMyCart( req, res) {
+    Cart.find({
+      userId: req.authenticated._id
+    })
+      .populate('userId')
+      .populate('product.productId')
+      .then(cart => {
+        res.status(200).json(cart)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  }
+
 
 }
 

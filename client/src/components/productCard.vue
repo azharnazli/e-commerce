@@ -14,14 +14,15 @@
             </v-expand-transition>
           </v-img>
           <v-card-text class="pt-4" style="position: relative;">
-            <v-btn absolute color="#00bdaa" class="white--text" fab large right top>
-              <v-icon>shopping_cart</v-icon>
-            </v-btn>
             <h3 class="display-1 font-weight-light teal--text mb-2">{{ name }}</h3>
-            <div class="font-weight-light title mb-2">stock : {{ stock }}</div>
-            <div class="font-weight-light title mb-2">
-              {{ description }}
-            </div>
+            <card-modal 
+            v-bind:description="description"
+            v-bind:image="image"
+            v-bind:names="name"
+            v-bind:stock="stock"
+            v-bind:price="price"
+            v-bind:cardId="cardId"
+            />
           </v-card-text>
         </v-card>
       </v-hover>
@@ -41,12 +42,16 @@
 
 </style>
 <script>
+import cardModal from './productModal'
 export default {
-  props: ['name', 'image', 'price', 'description', 'stock'],
+  props: ['name', 'image', 'price', 'description', 'stock','cardId'],
   data(){
     return {
      
     }
+  },
+  components : {
+    cardModal
   }
 }
 </script>

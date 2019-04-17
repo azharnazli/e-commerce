@@ -3,6 +3,7 @@ const User = require('../models/user')
 
 module.exports = (req, res, next) => {
   try {
+    console.log(req.headers)
     const decode = verify(req.headers.token, process.env.SECRET_KEY)
     User.findOne({
         email: decode.email
