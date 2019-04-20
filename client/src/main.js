@@ -4,6 +4,10 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 
+const eventBus = new Vue()
+
+export default eventBus
+
 Vue.config.productionTip = false
 Vue.prototype.axios = axios.create({
   baseURL: 'http://localhost:3000/'

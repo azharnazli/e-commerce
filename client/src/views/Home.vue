@@ -1,4 +1,4 @@
-<template>
+<template>         
   <v-container grid-list-md>
     <v-layout row wrap>
       <card style="margin: 10px;" 
@@ -8,7 +8,8 @@
       v-bind:price="product.price" 
       v-bind:stock="product.stock"
       v-bind:image="product.image"
-      v-bind:cardId="product._id">
+      v-bind:cardId="product._id"
+      v-on:fetchCart="fetchCart">
       </card>
     </v-layout>
   </v-container>
@@ -16,6 +17,7 @@
 
 <script>
   import card from '../components/productCard.vue'
+  import eventBus from  '../main.js'
 
   export default {
     props: ['searchData'],
@@ -27,9 +29,13 @@
         products: []
       }
     },
+    created() {
+      eventBus.$on('callProduct', ()=> {
+        this.getProduct()
+      })
+    },
     mounted() {
       this.getProduct()
-
     },
     methods: {
       getProduct() {
@@ -38,15 +44,17 @@
               token: localStorage.getItem('token')
             }
           })
-          .then(({
-            data
-          }) => {
+          .then(({ data }) => {
             this.products = data
           })
           .catch(err => {
             console.log(err)
           })
-      }
+      },
+      fetchCart(){
+        this.$emit('fetchCart')
+      },
+      
     },
     computed: {
       filteredProduct: function () {

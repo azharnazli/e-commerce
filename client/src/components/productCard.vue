@@ -22,6 +22,7 @@
             v-bind:stock="stock"
             v-bind:price="price"
             v-bind:cardId="cardId"
+            v-on:fetchCart="fetchCart"
             />
           </v-card-text>
         </v-card>
@@ -52,6 +53,11 @@ export default {
   },
   components : {
     cardModal
+  },
+  methods : {
+    fetchCart() {
+      this.$emit('fetchCart')
+    }
   }
 }
 </script>

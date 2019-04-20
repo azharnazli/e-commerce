@@ -24,8 +24,8 @@
 
 <script>
   import errorAlert from '../components/error.vue'
-import { constants } from 'crypto';
   export default {
+    props : ['changeRoles'],
     components: {
       errorAlert
     },
@@ -45,6 +45,7 @@ import { constants } from 'crypto';
         v => !!v || 'E-mail is required',
         v => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
+      roles : ''
     }),
 
     methods: {
@@ -55,8 +56,11 @@ import { constants } from 'crypto';
           })
           .then(({ data }) => {
             localStorage.setItem('token', data.token)
+            localStorage.setItem('roles', data.roles)
+            this.roles = localStorage.getItem('roles')
             this.$refs.form.reset()
             this.$emit('successLogin')
+            this.$emit('changeRoles')
             this.$router.push('/')
           })
           .catch(err => {

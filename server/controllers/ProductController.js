@@ -3,6 +3,7 @@ const Product = require('../models/product')
 class ProductController{
 
   static createProduct(req, res) {
+    req.body.image = req.file.gcsUrl
     Product.create(req.body)
       .then((product)=> {
         res.status(201).json(product)
@@ -26,8 +27,33 @@ class ProductController{
       })
   }
 
+  static getProduct(req, res) {
+    Product.findById(req.params.productId)
+      .then((products) => {
+        res.status(200).json(products)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  }
+
   static editProduct( req, res) {
-    Product.findOneAndUpdate({_id : req.params.productId}, req.body, {new : true, runValidators:true})
+    if(!req.file) {
+      req.file = {}
+      req.file.gcsUrl = req.body.file
+    }
+    Product.findOneAndUpdate(
+    {
+      _id : req.params.productId
+    }, {
+      name: req.body.name,
+      description: req.body.description,
+      stock: req.body.stock,
+      price: req.body.price,
+      image: req.file.gcsUrl,
+    }, {
+      new : true, runValidators:true
+    })
     .then(editedProduct => {
       res.status(200).json(editedProduct)
     })

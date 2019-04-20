@@ -16,7 +16,7 @@
 
         <v-container>
           <h3 style="margin-left:  20px;">Price : $ {{ price }} </h3>
-          <h3 style="margin-left:  20px;"> stock: {{ stock }} </h3>
+          <h3 style="margin-left:  20px;" > stock:  {{stock}} </h3>
           <p style="margin-left:  20px;"> Description : {{ description }} </p>
         </v-container>
 
@@ -29,16 +29,21 @@
           <v-spacer></v-spacer>
           <v-btn 
           v-on:click="addProduct"
+          v-if="stock >= 1"
           flat fab dark color="indigo">
             <v-icon dark>add</v-icon>
           </v-btn>
-          <v-btn 
+          <v-btn
+          v-if="stock >= 1" 
           v-on:click="subsProduct"
           flat fab dark color="indigo">
             <v-icon dark>remove</v-icon>
           </v-btn>
-          <h2 style="margin-right:10px;" >Total: {{ total  }} </h2>
+          <h2 
+          v-if="stock >= 1"
+          style="margin-right:10px;" >Total: {{ total  }} </h2>
           <v-btn flat color="primary"
+          v-if="stock >= 1"
           v-on:click="addtoCart" 
           @click="dialog = false"
           >add to cart</v-btn>
@@ -56,25 +61,41 @@
         total:  0,
         myProduct : {
           productId : '',
-          quantity: ''
+          quantity: 0
         }
 
       }
     },
     methods : {
       addProduct() {
-        this.total++
+        if(this.total < this.stock) {
+          this.total++
+        }
       },
       subsProduct() {
         if(this.total > 0) {
           this.total--
         }
+
       },
       addtoCart() {
         this.myProduct.productId = this.cardId
         this.myProduct.quantity = this.total
         this.$router.push('/')
-        console.log(this.myProduct)
+        this.createCart(this.myProduct)
+      },
+      createCart(products){
+        this.axios.post('/cart', products, {
+          headers :{
+            token : localStorage.getItem('token')
+          }
+        })
+          .then((data) => {
+            this.$emit('fetchCart')
+          })
+          .catch(err => {
+            console.log(err.response)
+          })
       }
     }
   }

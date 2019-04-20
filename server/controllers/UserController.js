@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const { compare }  = require('../helpers/brcypt')
 const { sign } = require('../helpers/jwt')
+const { verify } = require('../helpers/jwt')
 
 class UserController {
 
@@ -40,13 +41,22 @@ class UserController {
               email :found.email,
              _id :  found._id,
             })
-            res.status(200).json({token})
+            res.status(200).json({token , roles : found.roles})
           }
         }
       })
       .catch(err => {
         res.status(500).json(err)
       })
+  }
+
+  static verifyToken(req, res) {
+    let verified = verify(req.body.token)
+    if(!verified) {
+      res.status(500).json({err : 'cant verified'})
+    } else {
+      res.status(200).json(verified)
+    }
   }
 }
 

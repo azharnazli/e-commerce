@@ -5,7 +5,8 @@ const authenticated = require('../../middlewares/authenticated')
 routes.use(authenticated)
 
 routes.post('/', CartController.createCart)
-routes.delete('/:cartId', CartController.deleteCart)
+routes.patch('/:productId', CartController.editCartQuantity)
+routes.post('/checkout', CartController.checkoutCart)
 routes.get('/', CartController.findMyCart)
 
 
