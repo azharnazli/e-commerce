@@ -8,6 +8,7 @@ routes.post('/', CartController.createCart)
 routes.patch('/:productId', CartController.editCartQuantity)
 routes.post('/checkout', CartController.checkoutCart)
 routes.get('/', CartController.findMyCart)
+routes.delete('/', CartController.removeCart)
 
 
 module.exports = routes

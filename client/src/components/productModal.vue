@@ -16,7 +16,7 @@
 
         <v-container>
           <h3 style="margin-left:  20px;">Price : $ {{ price }} </h3>
-          <h3 style="margin-left:  20px;" > stock:  {{stock}} </h3>
+          <h3 style="margin-left:  20px;"> stock: {{stock}} </h3>
           <p style="margin-left:  20px;"> Description : {{ description }} </p>
         </v-container>
 
@@ -27,26 +27,15 @@
             cancel
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn 
-          v-on:click="addProduct"
-          v-if="stock >= 1"
-          flat fab dark color="indigo">
+          <v-btn v-on:click="addProduct" v-if="stock >= 1" flat fab dark color="indigo">
             <v-icon dark>add</v-icon>
           </v-btn>
-          <v-btn
-          v-if="stock >= 1" 
-          v-on:click="subsProduct"
-          flat fab dark color="indigo">
+          <v-btn v-if="stock >= 1" v-on:click="subsProduct" flat fab dark color="indigo">
             <v-icon dark>remove</v-icon>
           </v-btn>
-          <h2 
-          v-if="stock >= 1"
-          style="margin-right:10px;" >Total: {{ total  }} </h2>
-          <v-btn flat color="primary"
-          v-if="stock >= 1"
-          v-on:click="addtoCart" 
-          @click="dialog = false"
-          >add to cart</v-btn>
+          <h2 v-if="stock >= 1" style="margin-right:10px;">Total: {{ total  }} </h2>
+          <v-btn flat color="primary" v-if="stock >= 1" v-on:click="addtoCart" @click="dialog = false">add to cart
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -54,26 +43,26 @@
 </template>
 <script>
   export default {
-    props: ['description', 'names', 'image', 'stock', 'price','cardId'],
+    props: ['description', 'names', 'image', 'stock', 'price', 'cardId'],
     data() {
       return {
         dialog: false,
-        total:  0,
-        myProduct : {
-          productId : '',
+        total: 0,
+        myProduct: {
+          productId: '',
           quantity: 0
         }
 
       }
     },
-    methods : {
+    methods: {
       addProduct() {
-        if(this.total < this.stock) {
+        if (this.total < this.stock) {
           this.total++
         }
       },
       subsProduct() {
-        if(this.total > 0) {
+        if (this.total > 0) {
           this.total--
         }
 
@@ -84,17 +73,17 @@
         this.$router.push('/')
         this.createCart(this.myProduct)
       },
-      createCart(products){
+      createCart(products) {
         this.axios.post('/cart', products, {
-          headers :{
-            token : localStorage.getItem('token')
-          }
-        })
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
           .then((data) => {
             this.$emit('fetchCart')
           })
           .catch(err => {
-            console.log(err.response)
+            this.$router.push('/login')
           })
       }
     }

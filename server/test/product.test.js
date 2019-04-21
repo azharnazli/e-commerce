@@ -55,7 +55,7 @@ describe('post success add new product', function () {
     }
     chai
       .request(app)
-      .post('/product')
+      .post('/products')
       .send(item)
       .set({token})
       .end(function (err, res) {
@@ -86,7 +86,7 @@ describe('post fail add product name', function () {
     }
     chai
       .request(app)
-      .post('/product')
+      .post('/products')
       .send(item)
       .set({token})
       .end(function (err, res) {
@@ -109,7 +109,7 @@ describe('post fail add product description', function () {
     }
     chai
       .request(app)
-      .post('/product')
+      .post('/products')
       .send(item)
       .set({token})
       .end(function (err, res) {
@@ -133,7 +133,7 @@ describe('post fail add product price lower than 1', function () {
     }
     chai
       .request(app)
-      .post('/product')
+      .post('/products')
       .send(item)
       .set({token})
       .end(function (err, res) {
@@ -156,7 +156,7 @@ describe('post fail add product stock lower than 0', function () {
     }
     chai
       .request(app)
-      .post('/product')
+      .post('/products')
       .send(item)
       .set({token})
       .end(function (err, res) {
@@ -173,7 +173,7 @@ describe('success get product from database', function () {
   it('should be get all product', function (done) {
     chai
       .request(app)
-      .get('/product')
+      .get('/products')
       .set({token})
       .end(function (err, res) {
         expect(err).to.be.null
@@ -187,21 +187,6 @@ describe('success get product from database', function () {
   })
 })
 
-describe('fail get product from database', function () {
-  it('should be get all product', function (done) {
-    chai
-      .request(app)
-      .get('/product')
-      .end(function (err, res) {
-        expect(err).to.be.null
-        expect(res.status).to.equal(401)
-        expect(res.body).haveOwnProperty('message')
-        done()
-      })
-  })
-})
-
-
 describe('put success edit product', function() {
   it('should be edit a product', function(done) {
     let item = {
@@ -213,7 +198,7 @@ describe('put success edit product', function() {
     }
     chai
         .request(app)
-        .put('/product/'+ productId)
+        .put('/products/'+ productId)
         .send(item)
         .set({token})
         .end(function( err , res) {
@@ -242,7 +227,7 @@ describe('put fail edit product name', function() {
     }
     chai
         .request(app)
-        .put('/product/'+ productId)
+        .put('/products/'+ productId)
         .send(item)
         .set({token})
         .end(function( err , res) {
@@ -267,7 +252,7 @@ describe('put fail edit product description', function() {
     }
     chai
         .request(app)
-        .put('/product/'+ productId)
+        .put('/products/'+ productId)
         .send(item)
         .set({token})
         .end(function( err , res) {
@@ -291,7 +276,7 @@ describe('put fail edit product price', function() {
     }
     chai
         .request(app)
-        .put('/product/'+ productId)
+        .put('/products/'+ productId)
         .send(item)
         .set({token})
         .end(function( err , res) {
@@ -315,7 +300,7 @@ describe('put fail edit product stock', function() {
     }
     chai
         .request(app)
-        .put('/product/'+ productId)
+        .put('/products/'+ productId)
         .send(item)
         .set({token})
         .end(function( err , res) {
@@ -332,7 +317,7 @@ describe('delete success delete a product', function() {
   it('should be delete a product', function(done) {
     chai
         .request(app)
-        .delete('/product/'+ productId)
+        .delete('/products/'+ productId)
         .set({token})
         .end(function(err , res) { 
           expect(err).to.be.null
@@ -347,7 +332,7 @@ describe('delete fail  delete a product', function() {
   it('should be delete a product', function(done) {
     chai
         .request(app)
-        .delete('/product/'+ productId)
+        .delete('/products/'+ productId)
         .end(function(err , res) { 
           expect(err).to.be.null
           expect(res.body).to.be.an('object')

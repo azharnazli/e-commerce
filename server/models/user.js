@@ -48,12 +48,12 @@ const UserSchema = new Schema({
   },
   roles : {
     type : String,
+    default : 'user'
   }
 })
 
 UserSchema.pre('save', function (next) {
   this.password = hash(this.password)
-  this.roles = 'user'
   next()
 })
 

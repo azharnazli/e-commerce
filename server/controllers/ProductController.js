@@ -3,7 +3,9 @@ const Product = require('../models/product')
 class ProductController{
 
   static createProduct(req, res) {
-    req.body.image = req.file.gcsUrl
+    
+    let urlImage =  req.file ? req.file.gcsUrl : ''
+    req.body.image = urlImage
     Product.create(req.body)
       .then((product)=> {
         res.status(201).json(product)
@@ -42,10 +44,8 @@ class ProductController{
       req.file = {}
       req.file.gcsUrl = req.body.file
     }
-    Product.findOneAndUpdate(
+    Product.findOneAndUpdate(req.params.productId,
     {
-      _id : req.params.productId
-    }, {
       name: req.body.name,
       description: req.body.description,
       stock: req.body.stock,

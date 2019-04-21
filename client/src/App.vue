@@ -48,6 +48,7 @@
       v-on:successLogin="isLogin = true"
       v-on:changeRoles="changeRoles"
       v-on:fetchCart="fetchCart"
+      v-bind:isLogin="isLogin"
       >
       </router-view>
     </v-content>
@@ -122,7 +123,6 @@
           })
       },
       changeRoles()  {
-        console.log('masukls')
           this.roles = localStorage.getItem('roles')
       }
     }

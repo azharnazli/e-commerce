@@ -91,7 +91,15 @@
         this.last_name = ''
         this.errMessage = false
         this.isError = false
+      },
+      checkLoginuser() {
+        if(localStorage.getItem('token')){
+          this.$router.push('/')
+        }
       }
+    },
+    created(){
+      this.checkLoginuser()
     }
   }
 

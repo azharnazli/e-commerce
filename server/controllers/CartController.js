@@ -1,8 +1,8 @@
 const Cart = require('../models/cart')
 const Product = require('../models/product')
 class CartController {
-
   static createCart(req, res) {
+
     Cart.findOneAndUpdate({
         userId: req.authenticated._id,
         productId: req.body.productId
@@ -11,14 +11,18 @@ class CartController {
         upsert: true
       })
       .then((newCart) => {
-        newCart.quantity += +req.body.quantity
+        if(!newCart.quantity) {
+          newCart.quantity = req.body.quantity
+        } else {
+          newCart.quantity += +req.body.quantity
+        }
         return newCart.save()
       })
       .then((cart) => {
         res.status(201).json(cart)
       })
       .catch(err => {
-        res.status(500).json(err)
+        res.status(400).json(err)
       })
   }
 
@@ -83,6 +87,16 @@ class CartController {
         res.status(500).json(err)
       })
   }
+
+  static removeCart(req, res) {
+    Cart.deleteMany({userId : req.authenticated._id})
+      .then(()=> {
+        res.status(200).json({message : 'cart is successfully removed'})
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+    }
 }
 
 module.exports = CartController

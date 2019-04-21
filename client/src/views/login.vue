@@ -7,8 +7,8 @@
       <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
 
       <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
-        :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1"
-        label="password" hint="At least 8 characters" counter @click:append="show1 = !show1">
+        :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="password"
+        hint="At least 8 characters" counter @click:append="show1 = !show1">
       </v-text-field>
 
       <v-btn :disabled="!valid" color="success" @click="login">
@@ -25,36 +25,40 @@
 <script>
   import errorAlert from '../components/error.vue'
   export default {
-    props : ['changeRoles'],
+    props: ['changeRoles','isLogin'],
     components: {
       errorAlert
     },
-    data: () => ({
-      show1: false,
-      isError: false,
-      errMessage: '',
-      password: '',
-      rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 8 || 'Min 8 characters',
-        emailMatch: () => ('The email and password you entered don\'t match')
-      },
-      valid: true,
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
-      ],
-      roles : ''
-    }),
-
+    data() {
+      return {
+        loginUser: false,
+        show1: false,
+        isError: false,
+        errMessage: '',
+        password: '',
+        rules: {
+          required: value => !!value || 'Required.',
+          min: v => v.length >= 8 || 'Min 8 characters',
+          emailMatch: () => ('The email and password you entered don\'t match')
+        },
+        valid: true,
+        email: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+        roles: ''
+      }
+    },
     methods: {
       login() {
         this.axios.post('users/login', {
             email: this.email,
             password: this.password
           })
-          .then(({ data }) => {
+          .then(({
+            data
+          }) => {
             localStorage.setItem('token', data.token)
             localStorage.setItem('roles', data.roles)
             this.roles = localStorage.getItem('roles')
@@ -73,7 +77,15 @@
         this.password = ''
         this.email = ''
         this.isError = false
+      },
+      checkLoginuser() {
+        if(localStorage.getItem('token')){
+          this.$router.push('/')
+        }
       }
+    },
+    created(){
+      this.checkLoginuser()
     }
   }
 

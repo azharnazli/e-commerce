@@ -12,7 +12,8 @@
         <v-spacer></v-spacer>
         <input style="display: block; margin-bottom: 30px;" type="file" @change="addImage" label="image"
           class="inputPrice" required />
-        <v-btn style="display:inline" bottom class="right" color="success">
+        <v-btn style="display:inline" bottom class="right" color="success"
+        @click="$router.push('/admin')">
           Back
         </v-btn>
         <v-spacer></v-spacer>
@@ -25,24 +26,24 @@
   </v-form>
 </template>
 <script>
+  import swal from 'sweetalert';
   export default {
-    props : ['getProduct'],
+    props: ['getProduct'],
     data() {
       return {
         id: this.$route.params.productId,
         product: {
-          name : '',
-          stock : '',
-          image : null,
-          description : '',
-          price : ''
+          name: '',
+          stock: '',
+          image: null,
+          description: '',
+          price: ''
         }
       }
     },
     methods: {
       addImage(event) {
         this.product.image = event.target.files[0]
-        console.log(this.product.image)
       },
       newProduct() {
         let fd = new FormData()
@@ -51,22 +52,24 @@
         fd.append('stock', this.product.stock)
         fd.append('price', this.product.price)
         fd.append('image', this.product.image)
-
-        console.log(fd)
-
         this.axios({
-          method : 'POST',
-          url : 'products',
-          data : fd,
-          headers : {
-            token : localStorage.getItem('token')
-          }
-        })
-          .then((data)=> {
+            method: 'POST',
+            url: 'products',
+            data: fd,
+            headers: {
+              token: localStorage.getItem('token')
+            }
+          })
+          .then((data) => {
             this.getProduct()
             this.$router.push('/admin')
           })
           .catch(err => {
+            swal({
+              title: "error",
+              text: "please fill all data",
+              icon: "warning",
+            });
             console.log(err)
           })
       }

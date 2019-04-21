@@ -56,7 +56,7 @@ before('createProduct', function(done) {
   }
   chai
     .request(app)
-    .post('/product')
+    .post('/products')
     .send(item)
     .set({token})
     .end(function (err, res) {
@@ -71,7 +71,8 @@ describe('post success create new cart', function(){
   it('should be create new cart', function(done) {
     let item = {
       userId,
-      productId
+      productId,
+      quantity : 2
     }
     chai
         .request(app)
@@ -88,49 +89,11 @@ describe('post success create new cart', function(){
   })
 })
 
-describe('post fail create cart UserId', function(){
-  it('should be error create cart', function(done) {
-    let item = {
-      userId: '',
-      productId,
-    }
-    chai
-        .request(app)
-        .post('/cart')
-        .send(item)
-        .set({token})
-        .end(function(err, res) {
-          expect(res.status).to.equal(400)
-          expect(res.body.err.userId).haveOwnProperty('message')
-          done()
-        })
-  })
-})
-
-describe('post fail create cart productId', function(){
-  it('should be create new cart', function(done) {
-    let item = {
-      userId,
-      productId : '',
-    }
-    chai
-        .request(app)
-        .post('/cart')
-        .send(item)
-        .set({token})
-        .end(function(err, res) {
-          expect(res.status).to.equal(400)
-          expect(res.body.err.productId).haveOwnProperty('message')
-          done()
-        })
-  })
-})
-
 describe('post success delete cart', function(){
   it('should be delete a cart', function(done) {
     chai
         .request(app)
-        .delete('/cart/' + cartId)
+        .delete('/cart/' )
         .set({token})
         .end(function(err, res) {
           expect(res.status).to.equal(200)
@@ -143,7 +106,7 @@ describe('post fail delete cart', function(){
   it('should be fail delete a cart', function(done) {
     chai
         .request(app)
-        .delete('/cart/' + cartId)
+        .delete('/cart/')
         .end(function(err, res) {
           expect(res.status).to.equal(401)
           done()

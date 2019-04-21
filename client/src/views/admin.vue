@@ -30,9 +30,15 @@
           .catch(err => {
             console.log(err)
           })
+      },
+      checkRoles() {
+        if(localStorage.getItem('roles')!== 'admin') {
+          this.$router.push('/')
+        }
       }
     },
     mounted() {
+      this.checkRoles()
       this.getProduct()
       eventBus.$on('fetchProd', ()=> {
         this.getProduct()

@@ -23,6 +23,8 @@
     </v-container>
   </v-form>
 </template>
+
+
 <script>
   export default {
     props : ['getProduct'],
@@ -58,7 +60,6 @@
           .then((data)=> {
             this.getProduct()
             this.$router.push('/admin')
-            console.log(data)
           })
           .catch(err => {
             console.log(err)
@@ -66,8 +67,6 @@
 
       },
       reset() {
-        this.$refs.form.reset()
-        eventBus.$emit('callProduct')
         this.$router.push('/admin')
       }
     },

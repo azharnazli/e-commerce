@@ -15,7 +15,7 @@ const CartSchema = new Schema({
   quantity: {
       type: Number,
       min: [1, 'minimum quantity is 1'],
-      default: 0
+      required : true
   }
 
 })
