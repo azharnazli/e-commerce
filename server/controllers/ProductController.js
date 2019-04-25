@@ -44,7 +44,7 @@ class ProductController{
       req.file = {}
       req.file.gcsUrl = req.body.file
     }
-    Product.findOneAndUpdate(req.params.productId,
+    Product.findByIdAndUpdate(req.params.productId,
     {
       name: req.body.name,
       description: req.body.description,
